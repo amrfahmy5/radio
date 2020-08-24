@@ -1,20 +1,38 @@
 const User = require("./../models/User");
 const con = require("../../config/connection");
 
-
+async function intializeSession(req,id,user_name)
+{
+    req.session.userID = id;
+    req.session.userName = user_name;
+}
 
 exports.singnup = async (req, res, next) => {
-    try {
-        await User.singnup(req.body);
-        res.status(201).json({
-            status: "created",
+    if (!req.body.name || !req.body.email || !req.body.password || !req.body.role) {
+        res.status(400).send({
+            status: "fail",
+            Erorr: "you need to provide name and email and password and role"
         })
-    } catch (err) {
-        res.status(401).json({
-            status: "faild to create new user ",
-            Error: err
-        })
+        return;
     }
+    await User.singnup(req.body,async (err, result) => {
+        if (result) {
+            await intializeSession(req,result.insertId,req.body.name)
+            res.status(201).json({
+                status: "created",
+            })
+            return;
+        }
+        else {
+            res.status(400).send({
+                status: "fail",
+                Erorr: "Error in Inserting"
+            })
+            return;
+        }
+    });
+
+
 }
 
 exports.login = async (req, res, next) => {
@@ -27,7 +45,7 @@ exports.login = async (req, res, next) => {
         })
         return;
     }
-    await User.login(req.body, (err, result) => {
+    await User.login(req.body, async (err, result) => {
         const user = result[0]
         // check the user if matches the one in dbs 
         if (!user) {
@@ -37,8 +55,7 @@ exports.login = async (req, res, next) => {
             })
             return;
         }
-        req.session.userID = user.id;
-        req.session.userName = user.user_name;
+        await intializeSession(req,user.id,user.user_name)
         res.status(200).json({
             status: "successfully loged in",
             user
@@ -48,7 +65,7 @@ exports.login = async (req, res, next) => {
 }
 
 exports.protect = async (req, res, next) => {
-    if (!req.session.userEmail) {
+    if (!req.session.userName||!req.session.userID) {
         res.status(401).send({
             status: "fail",
             messegge: "You are not logged in "
