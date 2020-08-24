@@ -1,4 +1,5 @@
-con = require("../../config/connection");
+const con = require("../../config/connection");
+
 
 exports.singnup = (req,res,callback)=>{
     con.query(
@@ -7,7 +8,7 @@ exports.singnup = (req,res,callback)=>{
         " VALUES ('"+req.name+"','"+req.email+"','"+req.password+"','"+req.age+"','"+req.role+"','"+req.img+"')" )
 }
 
-exports.login = (req,res,callback)=>{
-    return con.query('SELECT * FROM  online_test.student WHERE email = ? AND password = ?',
-            [req.email, req.password])
+exports.login = (user,callback)=>{
+    con.query('SELECT * FROM  user WHERE email = ? AND password = ?',
+            [user.email, user.password],callback)
 }
