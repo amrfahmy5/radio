@@ -12,7 +12,7 @@ var usersRouter = require('./routes/user');
 var programRouter = require('./routes/program');
 var episodeRouter = require('./routes/episode');
 var postRouter = require('./routes/post');
-
+var commentRouter = require('./routes/comment');
 var app = express();
 
 // view engine setup
@@ -34,7 +34,7 @@ app.use('/user', usersRouter);
 app.use('/program', programRouter);
 app.use('/episode', episodeRouter);
 app.use('/post', postRouter);
-
+app.use('/comment', commentRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
