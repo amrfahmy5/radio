@@ -3,7 +3,8 @@ const Program = require('../models/Program')
 
 exports.createProgram=async (req,res)=>{
     try{
-        await Program.createProgam(req.body);
+        USER_ID = 1 // till session work
+        await Program.save(req.body , USER_ID);
         res.status(201).json({
             status:"created"           
         })
@@ -18,7 +19,7 @@ exports.createProgram=async (req,res)=>{
 
 exports.updateProgram= async (req,res)=>{
     try{
-        await Program.updateProgram(req.body);
+        await Program.update(req.body);
         res.status(201).json({
             status:"updated"  
         })
@@ -33,7 +34,7 @@ exports.updateProgram= async (req,res)=>{
 
 exports.deleteProgram= async (req,res)=>{
     try{
-        await Program.deleteProgram(req.body);
+        await Program.delete(req.body);
         res.status(201).json({
             status:"deleted"  
         })
