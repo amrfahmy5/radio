@@ -7,10 +7,15 @@ const episodeController = require("../app/controller/episodeController")
 router.post('/save',episodeController.createEpisode);
 router.post('/update',episodeController.updateEpisode);
 
-router.get('/episodes/:program_id',episodeController.findByProgramId);
-router.get('/remove/:episode_id',episodeController.removeEpisode);
+router.get('/episodes',episodeController.findByProgramId);
+
+router.get('/remove',episodeController.removeEpisode);
+
+
+router.get('/rate',episodeController.makeRate);
+router.get('/episodeRate',episodeController.episodeRate);
 
 router.get("/", (req, res, next)=>{
-    res.render("index" ,{ title: 'Login' });
+  res.render("episodes");
 })
 module.exports = router;

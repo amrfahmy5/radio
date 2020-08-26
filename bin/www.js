@@ -16,10 +16,17 @@ var port = normalizePort(process.env.PORT || '8000');
 app.set('port', port);
 
 /**
- * Create HTTP server.
+ * Create HTTP server and socket io.
  */
 
 var server = http.createServer(app);
+var io = require('socket.io').listen(server)
+
+var socketNotify = require('../app/socket-io/notfication')
+
+socketNotify.connect(io)
+
+
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -28,6 +35,7 @@ var server = http.createServer(app);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
+
 
 /**
  * Normalize a port into a number, string, or false.
@@ -88,3 +96,5 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+

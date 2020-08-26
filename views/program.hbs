@@ -1,3 +1,5 @@
+
+
 create:
 <form action="/program/create" method="post" enctype="multipart/form-data">
     <input placeholder="file" type="file" value="insert" name="file">
@@ -31,3 +33,19 @@ program:
     <input placeholder="program_id" type="text" name="program_id" id="">
     <input type="submit" value="enter">
 </form>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+
+  var socket = io.connect();
+
+socket.on('new program',function(data){
+  alert("done")
+  console.log(data)
+});        
+socket.on('new eposide',function(data){
+  alert("done")
+  console.log(data)
+});        
+
+</script>

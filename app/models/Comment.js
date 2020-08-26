@@ -1,4 +1,4 @@
-con = require("../../config/connection");
+let con = require("../../config/connection");
 
 exports.findByPostId = (post_id , callback)=>{
     con.query("SELECT * FROM radio.comment WHERE post_id = ? " ,[post_id], callback)

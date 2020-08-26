@@ -1,0 +1,63 @@
+<div id="player">
+  <audio id="audio" src="http://localhost:8000/program/1/1.mp3" controls></audio>
+  <div id="mask"></div>
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+
+  var socket = io.connect();
+
+socket.on('new program',function(data){
+  console.log
+  alert("done")
+  console.log(data)
+});        
+
+</script>
+
+create:
+<form action="/episode/save" method="post" enctype="multipart/form-data">
+    <input placeholder="file" type="file" value="insert" name="file">
+    <input placeholder="title" type="text" name="title" id="title">
+    <input placeholder="description" type="text" name="description" id="">
+    <input placeholder="duration" type="text" name="duration" id="">
+    <input placeholder="program_id" type="text" name="program_id" id="">
+
+    <input type="submit" value="enter">
+</form>
+update:
+<form action="/episode/update" method="post" enctype="multipart/form-data">
+<input placeholder="file" type="file" value="insert" name="file">
+    <input placeholder="title" type="text" name="title" id="title">
+    <input placeholder="description" type="text" name="description" id="">
+    <input placeholder="duration" type="text" name="duration" id="">
+    <input placeholder="episode_id" type="text" name="episode_id" id="">
+    <input type="submit" value="enter">
+</form>
+
+delete:
+<form action="/episode/remove" method="get" enctype="multipart/form-data">
+    <input placeholder="episode_id" type="text" name="episode_id" id="">
+    <input type="submit" value="enter">
+</form>
+
+episode of specific program:
+<form action="/episode/episodes" method="get" enctype="multipart/form-data">
+    <input placeholder="program_id" type="text" name="program_id" id="">
+    <input type="submit" value="enter">
+</form> 
+
+make Rate:
+<form action="/episode/rate" method="get">
+  <input placeholder="episode_id" type="text" name="episode_id" id="">
+  <input placeholder="rate" type="text" name="rate" id="">
+  <input type="submit" value="enter">
+
+</form>
+
+create Rate:
+<form action="/episode/episodeRate" method="get">
+  <input placeholder="episode_id" type="text" name="episode_id" id="">
+  <input type="submit" value="enter">
+
+</form>

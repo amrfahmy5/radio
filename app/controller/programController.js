@@ -1,34 +1,10 @@
 const Program = require('../models/Program')
 const con = require('../../config/connection')
-//upload
 var formidable = require('formidable');
-var fs = require('fs');
-var imgPath = '/public/images/programImage/';
+const fileManager = require("../middelware/fileManager")
 
-function uploadFile(files, imgPath)//path after public
-{
-    if (!files.file.name) {
-        return;
-    }
-    var readStream = fs.createReadStream(files.file.path);
-    let mainPath = process.env.PWD + imgPath + ".png"
-    var writeStream = fs.createWriteStream(mainPath);
-    console.log(mainPath)
-    readStream.pipe(writeStream);
-    readStream.on('end', function () {
-        fs.unlinkSync(files.file.path);
-    });
-}
 
-function deleteFile(imgPath) {
-    let mainPath = process.env.PWD + imgPath + ".png"
-    try {
-        fs.unlink(mainPath, () => { })
-    } catch (error) {
-        throw error
-    }
-
-}
+var imgPath = '/images/programImage/';
 
 
 exports.createProgram = (req, res) => {
@@ -37,11 +13,19 @@ exports.createProgram = (req, res) => {
     form.parse(req, function (err, fields, files) {
         //let USER_ID = req.session.userID
         let USER_ID = 1
-        Program.save(fields, USER_ID, imgPath, (err, result) => {
+
+        let ext = files.file.name.split('.')
+        let extName=ext[ext.length - 1];
+
+        Program.save(fields, USER_ID,imgPath,extName , (err, result) => {
+            var socket = require('../socket-io/notfication')
+            socket.newProgram(fields)
             if (!err) {
-                uploadFile(files, imgPath + result.insertId)
-                res.status(201).json({
-                    status: "created"
+                fileManager.uploadFile(files, imgPath + result.insertId,(uploaded)=>{
+                    res.status(201).json({
+                        status: "created",
+                        image:(uploaded)?"image saved":"image not saved"
+                    })
                 })
             }
             else {
@@ -57,12 +41,17 @@ exports.createProgram = (req, res) => {
 exports.updateProgram = (req, res) => {
     var form = new formidable.IncomingForm();
     form.parse(req, function (err, fields, files) {
-        Program.update(fields,imgPath, (err, result) => {
+
+        let ext = files.file.name.split('.')
+        let extName=ext[ext.length - 1];
+
+        Program.update(fields,imgPath,extName, (err, result) => {
             if (!err) {
-                console.log(result)
-                uploadFile(files, imgPath + fields.program_id)
-                res.status(201).json({
-                    status:(result.affectedRows==1)? "updated":"notFounded"
+                fileManager.uploadFile(files, imgPath + result.program_id,(uploaded)=>{
+                    res.status(201).json({
+                        status: "updated",
+                        image:(uploaded)?"image updated":"image not updated"
+                    })
                 })
             }
             else {
@@ -75,14 +64,10 @@ exports.updateProgram = (req, res) => {
     })
 }
 
-
-
-
 exports.deleteProgram = (req, res) => {
     let program_id = req.param("program_id");
     Program.delete(program_id, (err, result) => {
         if (!err) {
-            deleteFile(imgPath + program_id);
             res.status(201).json({
                 status:(result.affectedRows==1)? "deleted":"notFounded"
             })
@@ -95,8 +80,6 @@ exports.deleteProgram = (req, res) => {
         }
     });
 }
-
-
 
 exports.getPrograms = (req, res) => {
 
