@@ -1,39 +1,34 @@
-let Episode = require("../models/Episode");
+const Episode = require("../models/Episode");
+var path = '/Audio/episodes/';
+var formidable = require('formidable');
+const fileManager = require("../middelware/fileManager")
+const validator = require("../middelware/validator")
 
-function uploadAudioFile(audio){
-    return "path";
-}
-function validate(episode) {
-    var state = 1;
-    return state;
-}
+
+
 exports.createEpisode= (req,res)=>{
-        episode = {
-            title : req.body.title,
-            description : req.body.description,
-            duration  : req.body.duration,
-            episode_content : uploadAudioFile(req.body),
-            program_id : req.body.program_id
-        }
-        var state = validate(episode);
-       
+    var form = new formidable.IncomingForm();
+    form.parse(req, function (err, fields, files) {
+        episode = fields;
+        var state = validator.validateEpisode(episode);
         user_id =  1 //req.session.user_id ;
         if (state === 1){
-            Episode.save(episode , user_id, (err , results)=>{
+            Episode.save(episode , user_id, path, (err , results)=>{
                 if (results){
+                    fileManager.uploadFile(files, path + results.insertId)
                     res.status(200).json({
                         status:"created"           
                     })
                 }
                 else  
-                   {
+                    {
                     res.status(500).json({
                         status:"faild to create new episode may program not found ",
                         Error:err
                     })
                 }
             });
-             
+                
             
         }
         else{
@@ -41,6 +36,7 @@ exports.createEpisode= (req,res)=>{
                 error:state           
             })
         }
+    })    
 }
 exports.findByProgramId = (req, res )=>{
     program_id =  req.param("program_id");

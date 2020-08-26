@@ -3,7 +3,7 @@ const con = require('../../config/connection')
 //upload
 var formidable = require('formidable');
 var fs = require('fs');
-var imgPath = '/public/images/programImage/';
+var imgPath = '/images/programImage/';
 
 function uploadFile(files, imgPath)//path after public
 {
@@ -11,7 +11,7 @@ function uploadFile(files, imgPath)//path after public
         return;
     }
     var readStream = fs.createReadStream(files.file.path);
-    let mainPath = process.env.PWD + imgPath + ".png"
+    let mainPath = process.env.PWD +"/public"+ imgPath + ".png"
     var writeStream = fs.createWriteStream(mainPath);
     console.log(mainPath)
     readStream.pipe(writeStream);
@@ -21,7 +21,7 @@ function uploadFile(files, imgPath)//path after public
 }
 
 function deleteFile(imgPath) {
-    let mainPath = process.env.PWD + imgPath + ".png"
+    let mainPath = process.env.PWD + +"/public"+ imgPath + ".png"
     try {
         fs.unlink(mainPath, () => { })
     } catch (error) {

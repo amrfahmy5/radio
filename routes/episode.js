@@ -11,6 +11,6 @@ router.get('/episodes/:program_id',episodeController.findByProgramId);
 router.get('/remove/:episode_id',episodeController.removeEpisode);
 
 router.get("/", (req, res, next)=>{
-    res.render("index" ,{ title: 'Login' });
+    res.render("episode");
 })
 module.exports = router;
