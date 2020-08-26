@@ -11,7 +11,7 @@ router.get('/episodes',episodeController.findByProgramId);
 
 router.get('/remove',episodeController.removeEpisode);
 
-
+router.get('/watch',episodeController.watch);
 router.get('/rate',episodeController.makeRate);
 router.get('/episodeRate',episodeController.episodeRate);
 

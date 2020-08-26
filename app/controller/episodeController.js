@@ -91,6 +91,24 @@ exports.removeEpisode = (req, res) => {
 
 
 //-----------------------------------------new-----------------------------------
+exports.watch = (req, res) => {
+    let user_id = 1 //req.session.user_id ;
+    let episode_id = req.param('episode_id');
+    Episode.watch(user_id, episode_id, (err, result) => {
+        if (!err) {
+            res.status(201).json({
+                status: "watched"
+            })
+        }
+        else {
+            res.status(401).json({
+                status: "faild to watch praogram  ",
+                Error: err
+            })
+        }
+    });
+}
+
 exports.makeRate = (req, res) => {
     let user_id = 1 //req.session.user_id ;
     let episode_id = req.param('episode_id');

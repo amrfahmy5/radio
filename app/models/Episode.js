@@ -30,18 +30,28 @@ exports.delete = (id , callback)=>{
 
 
 //-------------------------------------new--------------------------------
+exports.watch = (user_id,episode_id,callback)=>{
+    con.query("select * from radio.rate where user_id=? and episode_id=?",[user_id,episode_id],(err,result)=>{
+        if(result.length==0){
+            con.query("INSERT INTO radio.rate(user_id, episode_id, rate,watch) VALUES (?,?,0,1)",[user_id,episode_id],callback)
+        }
+        else
+            callback(null,"watchedBefor")
+    })
+}
+
 exports.insertRate = (user_id,episode_id,rate,callback)=>{
     con.query("select * from radio.rate where user_id=? and episode_id=?",[user_id,episode_id],(err,result)=>{
         if(result.length!=0){
-            con.query("UPDATE radio.rate SET  rate = ? WHERE user_id = ? and  episode_id =  ? ",[rate,user_id,episode_id],callback)}
-        else{
-            con.query("INSERT INTO radio.rate(user_id, episode_id, rate) VALUES (?,?,?)",[user_id,episode_id,rate],callback)
+            con.query("UPDATE radio.rate SET  rate = ? WHERE user_id = ? and  episode_id =  ? ",[rate,user_id,episode_id],callback)
         }
     })
 }
+
 exports.episodeRate = (episode_id,callback)=>{
-    con.query("select SUM(rate)/COUNT(episode_id) as rate from radio.rate where episode_id=?",[episode_id],callback)
+    con.query("select SUM(rate)/COUNT(episode_id) as rate from radio.rate where episode_id=? and rate!=0",[episode_id],callback)
 }
+
 
 
 
