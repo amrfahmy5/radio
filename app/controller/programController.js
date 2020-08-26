@@ -115,3 +115,21 @@ exports.getProgram = (req, res) => {
     });
 }
 
+exports.search= (req,res)=>{
+    let tableName = req.param('tableName');
+    let title = req.param('title');
+    let description = req.param('description');
+    Program.search(tableName,title,description,(err,result)=>{
+        if (!err) {
+            res.status(201).json({
+                "output": result
+            })
+        }
+        else {
+            res.status(401).json({
+                status: "faild to get episode ",
+                Error: err
+            })
+        }
+    })
+}

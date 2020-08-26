@@ -16,8 +16,6 @@ exports.update = (program,imgPath ,extName, callback)=>{
                 ,[program.title , program.description ,makePath(program.program_id,imgPath,extName) , program.show_date , program.program_id], callback)
 }
 
-
-
 exports.delete = (id , callback)=>{
     con.query("DELETE FROM radio.program WHERE id = ? " ,[id], callback)
 }
@@ -26,4 +24,15 @@ exports.getAllPrograms = (callback)=>{
 }
 exports.findProgramById = (id , callback)=>{
     con.query("SELECT * FROM radio.program WHERE id = ? " ,[id], callback)
+}
+
+
+exports.search = (tableName,title,description,callback)=>{
+    let regex =".*"
+    title+=regex;
+    description+=regex;
+    if(String(tableName).match('program'))
+        con.query("SELECT * FROM radio.program WHERE title REGEXP ? OR description REGEXP ?",[title,description],callback)
+    else if(String(tableName).match('episode'))
+    con.query("SELECT * FROM radio.episode WHERE title REGEXP ? OR description REGEXP ?",[title,description],callback)
 }

@@ -2,7 +2,6 @@ const Episode = require("../models/Episode");
 var path = '/Audio/episodes/';
 var formidable = require('formidable');
 const fileManager = require("../middelware/fileManager")
-const validator = require("../middelware/validator")
 
 
 
@@ -34,7 +33,6 @@ exports.createEpisode = (req, res) => {
         });
     })
 }
-
 exports.updateEpisode = (req, res) => {
     var form = new formidable.IncomingForm();
     form.parse(req, function (err, fields, files) {
@@ -58,8 +56,6 @@ exports.updateEpisode = (req, res) => {
         });
     })
 }
-
-
 exports.findByProgramId = (req, res) => {
     program_id = req.param("program_id");
     Episode.findByProgramId(program_id, (err, results) => {
@@ -108,7 +104,6 @@ exports.watch = (req, res) => {
         }
     });
 }
-
 exports.makeRate = (req, res) => {
     let user_id = 1 //req.session.user_id ;
     let episode_id = req.param('episode_id');
@@ -145,3 +140,4 @@ exports.episodeRate = (req, res) => {
         }
     });
 }
+

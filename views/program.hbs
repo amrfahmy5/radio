@@ -34,6 +34,17 @@ program:
     <input type="submit" value="enter">
 </form>
 
+serch:
+<form action="/program/search" method="get">
+    <select name="tableName" id="">
+        <option value="program">program</option>
+        <option value="episode">episode</option>
+    </select>
+    <input placeholder="title" type="text" name="title" id="">
+    <input placeholder="description" type="text" name="description" id="">
+    <input type="submit" value="enter">
+
+</form>
 <script src="/socket.io/socket.io.js"></script>
 <script>
 

@@ -11,11 +11,11 @@ router.post('/update', programContoller.updateProgram);
 router.get('/delete', programContoller.deleteProgram);
 router.get('/Allprogram', programContoller.getPrograms);
 router.get('/program', programContoller.getProgram);
+router.get('/search',programContoller.search)
 
-
-router.get('/', (req, res, next)=>{
+router.get('/', (req, res)=>{
     res.render('program')
   });
-  
+
 
 module.exports = router;
