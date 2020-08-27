@@ -1,51 +1,49 @@
 const Program = require('../models/Program')
 const con = require('../../config/connection')
-//upload
 var formidable = require('formidable');
-var fs = require('fs');
+const fileManager = require("../middelware/fileManager")
+
+
 var imgPath = '/images/programImage/';
+var promoPath = '/Audio/programPromo/'
 
-function uploadFile(files, imgPath)//path after public
+function NewProgramNotfication(fields){
+    var socket = require('../socket-io/notfication')
+    socket.newProgram(fields)
+}
+
+function saveFiles_sendRes(res,files,id,method)
 {
-    if (!files.file.name) {
-        return;
-    }
-    var readStream = fs.createReadStream(files.file.path);
-    let mainPath = process.env.PWD +"/public"+ imgPath + ".png"
-    var writeStream = fs.createWriteStream(mainPath);
-    console.log(mainPath)
-    readStream.pipe(writeStream);
-    readStream.on('end', function () {
-        fs.unlinkSync(files.file.path);
-    });
+    fileManager.uploadFile(files.file, imgPath + id, (imageUploaded) => {
+            fileManager.uploadFile(files.file2, promoPath + id, (promoUploaded) => {
+                res.status(200).json({
+                    status: method,
+                    image: (imageUploaded&&promoUploaded) ? "image and promo "+method : 
+                        (imageUploaded&&!promoUploaded)? "image "+ method+" but promo not": 
+                        (!imageUploaded&&promoUploaded)? "promo "+ method+" but image not" :"image and promo not "+method
+                })
+            })
+    })
 }
-
-function deleteFile(imgPath) {
-    let mainPath = process.env.PWD + +"/public"+ imgPath + ".png"
-    try {
-        fs.unlink(mainPath, () => { })
-    } catch (error) {
-        throw error
-    }
-
-}
-
 
 exports.createProgram = (req, res) => {
-    
+
     var form = new formidable.IncomingForm();
     form.parse(req, function (err, fields, files) {
-        //let USER_ID = req.session.userID
-        let USER_ID = 1
-        Program.save(fields, USER_ID, imgPath, (err, result) => {
+        let USER_ID = 1 //req.session.userID
+        let imgExtName =(files.file)?fileManager.getExtetion(files.file.name):''
+        let audioExtName=fileManager.getExtetion(files.file2.name)
+        let validFile = {
+            "img":(files.file&&(imgExtName=='jpg'|| imgExtName=='png'|| imgExtName=='PNG'))?true:false,
+            "audio":(files.file2&&(audioExtName=='mp3'))?true:false
+        }
+        Program.save(fields, USER_ID, imgPath,promoPath, imgExtName,validFile, (err, result) => {
+            NewProgramNotfication(fields);
             if (!err) {
-                uploadFile(files, imgPath + result.insertId)
-                res.status(201).json({
-                    status: "created"
-                })
+                saveFiles_sendRes(res,files,result.insertId,'saved')                
             }
             else {
-                res.status(401).json({
+                res.status(404).json({
                     status: "faild to create praogram ",
                     Error: err
                 })
@@ -57,13 +55,15 @@ exports.createProgram = (req, res) => {
 exports.updateProgram = (req, res) => {
     var form = new formidable.IncomingForm();
     form.parse(req, function (err, fields, files) {
-        Program.update(fields,imgPath, (err, result) => {
+        let imgExtName =(files.file)?fileManager.getExtetion(files.file.name):''
+        let audioExtName=fileManager.getExtetion(files.file2.name)
+        let validFile = {
+            "img":(files.file&&(imgExtName=='jpg'|| imgExtName=='png'|| imgExtName=='PNG'))?true:false,
+            "audio":(files.file2&&(audioExtName=='mp3'))?true:false
+        }
+        Program.update(fields, imgPath,promoPath, imgExtName,validFile, (err, result) => {
             if (!err) {
-                console.log(result)
-                uploadFile(files, imgPath + fields.program_id)
-                res.status(201).json({
-                    status:(result.affectedRows==1)? "updated":"notFounded"
-                })
+                saveFiles_sendRes(res,files,fields.program_id,'update')  
             }
             else {
                 res.status(401).json({
@@ -75,16 +75,12 @@ exports.updateProgram = (req, res) => {
     })
 }
 
-
-
-
 exports.deleteProgram = (req, res) => {
     let program_id = req.param("program_id");
     Program.delete(program_id, (err, result) => {
         if (!err) {
-            deleteFile(imgPath + program_id);
             res.status(201).json({
-                status:(result.affectedRows==1)? "deleted":"notFounded"
+                status: (result.affectedRows == 1) ? "deleted" : "notFounded"
             })
         }
         else {
@@ -95,8 +91,6 @@ exports.deleteProgram = (req, res) => {
         }
     });
 }
-
-
 
 exports.getPrograms = (req, res) => {
 
@@ -132,3 +126,21 @@ exports.getProgram = (req, res) => {
     });
 }
 
+exports.search = (req, res) => {
+    let tableName = req.param('tableName');
+    let title = req.param('title');
+    let description = req.param('description');
+    Program.search(tableName, title, description, (err, result) => {
+        if (!err) {
+            res.status(201).json({
+                "output": result
+            })
+        }
+        else {
+            res.status(401).json({
+                status: "faild to get episode ",
+                Error: err
+            })
+        }
+    })
+}

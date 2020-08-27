@@ -1,25 +1,32 @@
 
 var formidable = require('formidable');
 var fs = require('fs');
-exports.uploadFile = (files, imgPath)=>//path after public
+const { concatSeries } = require('async');
+
+
+exports.getExtetion= (name)=>{
+    let imgExt=name.split('.');
+    return imgExt[imgExt.length - 1] ;
+}
+exports.uploadFile = (file, imgPath,callback)=>//path after public
 {
-    if (!files.file.name) {
-        return;
+    let extName = this.getExtetion(file.name)
+    if (!file.name||!(extName=='jpg'|| extName=='png'|| extName=='PNG'|| extName=='mp3')){
+        callback(false);
+        return ;
     }
-    let ext = files.file.name.split('.')
-    let extName="." + ext[ext.length - 1];
-    var readStream = fs.createReadStream(files.file.path);
-    let mainPath = process.env.PWD +"/public"+ imgPath +extName
+    var readStream = fs.createReadStream(file.path);
+    let mainPath = process.env.PWD +"/public"+ imgPath +"." +extName
     var writeStream = fs.createWriteStream(mainPath);
-    console.log(mainPath)
     readStream.pipe(writeStream);
     readStream.on('end', function () {
-        fs.unlinkSync(files.file.path);
+        fs.unlinkSync(file.path);
+        callback(true) ;
+        return 
     });
 }
-
-function deleteFile(imgPath) {
-    let mainPath = process.env.PWD + +"/public"+ imgPath + ".png"
+exports.deleteFile= function (imgPath) {
+    let mainPath = process.env.PWD + +"/public"+ imgPath
     try {
         fs.unlink(mainPath, () => { })
     } catch (error) {

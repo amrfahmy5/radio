@@ -1,33 +1,62 @@
 create:
 <form action="/program/create" method="post" enctype="multipart/form-data">
-    <input placeholder="file" type="file" value="insert" name="file">
-    <input placeholder="title" type="text" name="title" id="title">
-    <input placeholder="description" type="text" name="description" id="">
-    <input placeholder="show_date" type="text" name="show_date" id="">
-    <input type="submit" value="enter">
+  <input placeholder="file" type="file" value="insert" name="file">
+  <input placeholder="file" type="file" value="insert" name="file2">
+  <input placeholder="title" type="text" name="title" id="title">
+  <input placeholder="description" type="text" name="description" id="">
+  <input placeholder="show_date" type="text" name="show_date" id="">
+  <input type="submit" value="enter">
 </form>
 update:
 <form action="/program/update" method="post" enctype="multipart/form-data">
-    <input placeholder="file" type="file" value="insert" name="file">
-    <input placeholder="program_id" type="text" name="program_id" id="">
-    <input placeholder="title" type="text" name="title" id="title">
-    <input placeholder="description" type="text" name="description" id="">
-    <input placeholder="show_date" type="text" name="show_date" id="">
-    <input type="submit" value="enter">
+  <input placeholder="file" type="file" value="insert" name="file">
+  <input placeholder="file" type="file" value="insert" name="file2">
+  <input placeholder="program_id" type="text" name="program_id" id="">
+  <input placeholder="title" type="text" name="title" id="title">
+  <input placeholder="description" type="text" name="description" id="">
+  <input placeholder="show_date" type="text" name="show_date" id="">
+  <input type="submit" value="enter">
 </form>
 
 delete:
 <form action="/program/delete" method="get" enctype="multipart/form-data">
-    <input placeholder="program_id" type="text" name="program_id" id="">
-    <input type="submit" value="enter">
+  <input placeholder="program_id" type="text" name="program_id" id="">
+  <input type="submit" value="enter">
 </form>
 
 Allprogram:
 <form action="/program/Allprogram" method="get" enctype="multipart/form-data">
-    <input type="submit" value="enter">
+  <input type="submit" value="enter">
 </form>
 program:
 <form action="/program/program" method="get" enctype="multipart/form-data">
-    <input placeholder="program_id" type="text" name="program_id" id="">
-    <input type="submit" value="enter">
+  <input placeholder="program_id" type="text" name="program_id" id="">
+  <input type="submit" value="enter">
 </form>
+
+serch:
+<form action="/program/search" method="get">
+  <select name="tableName" id="">
+    <option value="program">program</option>
+    <option value="episode">episode</option>
+  </select>
+  <input placeholder="title" type="text" name="title" id="">
+  <input placeholder="description" type="text" name="description" id="">
+  <input type="submit" value="enter">
+
+</form>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+
+  var socket = io.connect();
+
+  socket.on('new program', function (data) {
+    alert("done")
+    console.log(data)
+  });
+  socket.on('new eposide', function (data) {
+    alert("done")
+    console.log(data)
+  });
+
+</script>

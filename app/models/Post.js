@@ -1,4 +1,4 @@
-con = require("../../config/connection");
+let con = require("../../config/connection");
 
 exports.getAllPosts = (callback)=>{
     con.query("SELECT * FROM radio.post" , callback)
