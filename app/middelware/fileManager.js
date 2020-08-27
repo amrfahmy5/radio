@@ -2,20 +2,25 @@
 var formidable = require('formidable');
 var fs = require('fs');
 const { concatSeries } = require('async');
-exports.uploadFile = (files, imgPath,callback)=>//path after public
+
+
+exports.getExtetion= (name)=>{
+    let imgExt=name.split('.');
+    return imgExt[imgExt.length - 1] ;
+}
+exports.uploadFile = (file, imgPath,callback)=>//path after public
 {
-    let ext = files.file.name.split('.')
-    let extName=ext[ext.length - 1];
-    if (!files.file.name||!(extName=='jpg'|| extName=='png'|| extName=='PNG'|| extName=='mp3')){
+    let extName = this.getExtetion(file.name)
+    if (!file.name||!(extName=='jpg'|| extName=='png'|| extName=='PNG'|| extName=='mp3')){
         callback(false);
         return ;
     }
-    var readStream = fs.createReadStream(files.file.path);
+    var readStream = fs.createReadStream(file.path);
     let mainPath = process.env.PWD +"/public"+ imgPath +"." +extName
     var writeStream = fs.createWriteStream(mainPath);
     readStream.pipe(writeStream);
     readStream.on('end', function () {
-        fs.unlinkSync(files.file.path);
+        fs.unlinkSync(file.path);
         callback(true) ;
         return 
     });

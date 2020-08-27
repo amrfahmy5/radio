@@ -15,7 +15,7 @@ exports.createEpisode = (req, res) => {
             if (!err) {
                 var socket = require('../socket-io/notfication')
                 socket.newEpisode(fields)
-                fileManager.uploadFile(files, path + results.insertId,(uploaded)=>{
+                fileManager.uploadFile(files.file, path + results.insertId,(uploaded)=>{
                     console.log(uploaded)
                     res.status(200).json({
                         status: "created",
@@ -40,7 +40,7 @@ exports.updateEpisode = (req, res) => {
         user_id = 1 //req.session.user_id ;
         Episode.update(episode, path, (err, result) => {
             if (!err) {
-                fileManager.uploadFile(files, path + episode.program_id,(uploaded)=>{
+                fileManager.uploadFile(files.file, path + episode.program_id,(uploaded)=>{
                     res.status(201).json({
                         status: "updated",
                         image:(uploaded)?"audio updated":"audio not updated"
