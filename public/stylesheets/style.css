@@ -9,6 +9,7 @@ body {
 .navbar {
 	background: #fff;
 	padding-left: 16px;
+	box-shadow: 0 0 4px rgba(0,0,0,.1);
 	padding-right: 16px;
 	border-bottom: 1px solid #dfe3e8;
 	border-radius: 0;
@@ -162,6 +163,47 @@ body {
 .form-check-label input {
 	position: relative;
 	top: 1px;
+}
+.navbar .badge {
+	color: #fff;
+	background: #f44336;
+	font-size: 11px;
+	border-radius: 20px;
+	position: absolute;
+	min-width: 17px;
+	padding: 4px 6px 0;
+	min-height: 18px;
+	top: 5px;
+}
+.navbar a.notifications, .navbar a.messages {
+	position: relative;
+	margin-right: 10px;
+}
+.navbar a.messages {
+	margin-right: 20px;
+}
+.navbar a.notifications .badge {
+	margin-left: -4px;
+}
+.navbar a.messages .badge {
+	margin-left: -4px;
+}	
+.navbar .active a, .navbar .active a:hover, .navbar .active a:focus {
+	background: transparent !important;
+}
+.navbar .dropdown-item .material-icons {
+	font-size: 21px;
+	line-height: 16px;
+	vertical-align: middle;
+	margin-top: -2px;
+}
+.nav-link img {
+	border-radius: 50%;
+	width: 36px;
+	height: 36px;
+	margin: -8px 0;
+	float: left;
+	margin-right: 10px;
 }
 @media (min-width: 1200px){
 	.form-inline .input-group {
