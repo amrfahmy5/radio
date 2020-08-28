@@ -1,0 +1,35 @@
+create:
+<form action="/episode/save" method="post" enctype="multipart/form-data">
+    <input placeholder="file" type="file" value="insert" name="file">
+    <input placeholder="title" type="text" name="title" id="title">
+    <input placeholder="description" type="text" name="description" id="">
+    <input placeholder="duration" type="text" name="duration" id="">
+    <input placeholder="program_id" type="text" name="program_id" id="">
+
+    <input type="submit" value="enter">
+</form>
+update:
+<form action="/program/update" method="post" enctype="multipart/form-data">
+    <input placeholder="file" type="file" value="insert" name="file">
+    <input placeholder="program_id" type="text" name="program_id" id="">
+    <input placeholder="title" type="text" name="title" id="title">
+    <input placeholder="description" type="text" name="description" id="">
+    <input placeholder="show_date" type="text" name="show_date" id="">
+    <input type="submit" value="enter">
+</form>
+
+delete:
+<form action="/program/delete" method="get" enctype="multipart/form-data">
+    <input placeholder="program_id" type="text" name="program_id" id="">
+    <input type="submit" value="enter">
+</form>
+
+Allprogram:
+<form action="/program/Allprogram" method="get" enctype="multipart/form-data">
+    <input type="submit" value="enter">
+</form>
+program:
+<form action="/program/program" method="get" enctype="multipart/form-data">
+    <input placeholder="program_id" type="text" name="program_id" id="">
+    <input type="submit" value="enter">
+</form> 

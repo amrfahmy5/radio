@@ -27,8 +27,6 @@ exports.delete = (id , callback)=>{
 
 
 
-
-
 //-------------------------------------new--------------------------------
 exports.watch = (user_id,episode_id,callback)=>{
     con.query("select * from radio.rate where user_id=? and episode_id=?",[user_id,episode_id],(err,result)=>{

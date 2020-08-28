@@ -9,7 +9,7 @@ exports.singnup = (req, callback) => {
 }
 exports.login = (user, callback) => {
     con.query('SELECT * FROM  user WHERE email = ? AND password = ?',
-        [user.email, user.password], callback)
+            [user.email, user.password],callback)
 }
 
 exports.fbSingnup = (req, callback) => {
@@ -26,4 +26,11 @@ exports.fbLogin = (id, callback) => {
 exports.userSession = (id, callback) => {
     con.query('SELECT * FROM  user WHERE id = ?',
         [id], callback)
+}
+
+//----------------------------------------------
+// Controller Later
+exports.follow = (user_id , follower_id, callback)=>{
+    con.query("INSERT INTO radio.follow (user_id, user_follow_id) VALUES (? , ? )"
+                ,[user_id ,follower_id ], callback)
 }

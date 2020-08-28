@@ -28,6 +28,9 @@ socketNotify.connect(io)
 
 
 
+var socketNotify = require('../app/socket-io/notfication')
+
+socketNotify.connect(io)
 /**
  * Listen on provided port, on all network interfaces.
  */
