@@ -1,3 +1,5 @@
 <div class="container">
-	main div
+		{{# each posts}}
+			{{> post single_post = this}}
+		{{/ each}}
 </div>
