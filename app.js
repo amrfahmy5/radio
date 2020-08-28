@@ -36,8 +36,13 @@ app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.json());
 
+//----------------passport-------------------
+var passport = require('passport');
 
 
+app.use(passport.initialize());
+app.use(passport.session());
+//----------------!passport-------------------
 
 app.use('/user', usersRouter);
 app.use('/program', programRouter);
