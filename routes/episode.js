@@ -7,7 +7,7 @@ const episodeController = require("../app/controller/episodeController")
 router.post('/save',episodeController.createEpisode);
 router.post('/update',episodeController.updateEpisode);
 
-router.get('/episodes',episodeController.findByProgramId);
+router.get('/episodes/:program_id',episodeController.findByProgramId);
 
 router.get('/remove',episodeController.removeEpisode);
 

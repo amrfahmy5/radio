@@ -13,6 +13,8 @@ var programRouter = require('./routes/program');
 var episodeRouter = require('./routes/episode');
 var postRouter = require('./routes/post');
 var commentRouter = require('./routes/comment');
+var miniRadio = require('./routes/miniRadio')
+
 var app = express();
 
 // view engine setup
@@ -49,6 +51,7 @@ app.use('/program', programRouter);
 app.use('/episode', episodeRouter);
 app.use('/post', postRouter);
 app.use('/comment', commentRouter);
+app.use('/miniRadio', miniRadio);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

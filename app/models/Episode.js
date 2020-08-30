@@ -7,18 +7,18 @@ exports.save = (episode , user_id, path,callback)=>{
     con.query("SELECT max(id) FROM episode",(err,result)=>{
         id = (result[0]['max(id)']!=null)?result[0]['max(id)'] +1 : 1
         con.query("INSERT INTO radio.episode (id,title, description, duration, episode_content, user_id , program_id) VALUES (?,? , ? , ? , ? , ? , ?)"
-          ,[id,episode.title , episode.description , episode.duration , makePath(id,path ,".mp3") , user_id , episode.program_id], callback)
+          ,[id,episode.title , episode.description , episode.duration , makePath(id,path ,"mp3") , user_id , episode.program_id], callback)
         })
 }
 exports.update = (episode,path , callback)=>{
     con.query("UPDATE radio.episode SET title  = ? , description =  ? , duration =  ? , episode_content = ? WHERE id = ?"
-                ,[episode.title , episode.description , episode.duration ,makePath(episode.episode_id,path ,".mp3") , episode.episode_id], callback)
+                ,[episode.title , episode.description , episode.duration ,makePath(episode.episode_id,path ,"mp3") , episode.episode_id], callback)
 }
 
 
 
 exports.findByProgramId = (program_id , callback)=>{
-    con.query("SELECT * FROM radio.episode WHERE program_id = ? " ,[program_id], callback)
+    con.query("SELECT * FROM radio.episode WHERE episode.program_id = ? " ,[program_id], callback)
 }
 exports.delete = (id , callback)=>{
     con.query("DELETE FROM radio.episode WHERE id = ? " ,[id], callback)

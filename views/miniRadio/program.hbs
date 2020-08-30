@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html class=''>
+
+<head>
+    <link rel="stylesheet" href="/miniRadio/style.css">
+    <script src="/miniRadio/home.js"></script>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://enscrollplugin.com/releases/enscroll-0.6.1.min.js"></script>
+    <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900'>
+    <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
+    <link rel='stylesheet prefetch' href=''>
+</head>
+<script type="text/javascript">
+
+	$(document).ready(function(){
+	  $("a.program_name").click(function(){
+	    let id = this.id;
+	    $('#epo'+id).toggle(()=>{
+            $(this).animate({ 
+                // style change
+            }, 500);
+        })
+	  });
+	});
+</script>
+<body>
+    <div class="mhn-player">
+        <div class="album-art"></div>
+
+        <div class="play-list">
+            {{#each programs}}
+            
+            <a style="text-align: center;" class="program_name"id="{{this.program_id}}">
+                {{this.title}}
+                </a>
+            <hr style="background-color: aliceblue;">
+            <div id="epo{{this.program_id}}"style="display: none;"> 
+                {{#each this.eposides}}
+                <a href="#" class="play"
+                    data-id="{{this.id}}"
+                    data-album="{{../this.title}}"
+                    data-artist="{{../this.user_name}}"
+                    data-title="{{this.title}}"
+                    data-albumart="{{../this.cover}}"
+                    data-url="{{this.episode_content}}"></a>
+                    
+                {{/each}}
+            </div>
+            {{/each}}
+        </div>
+
+
+        <div class="audio"></div>
+        <div class="current-info">
+            <div class="song-artist"></div>
+            <div class="song-album"></div>
+            <div class="song-title"></div>
+        </div>
+        <div class="controls">
+            <a href="#" class="toggle-play-list"><i class="fa fa-list-ul"></i></a>
+            <div class="duration clearfix">
+                <span class="pull-left play-position"></span>
+                <span class="pull-right"><span class="play-current-time">00:00</span> / <span
+                        class="play-total-time">00:00</span></span>
+            </div>
+            <div class="progress">
+                <div class="bar"></div>
+            </div>
+            <div class="action-button">
+                <a href="#" class="prev"><i class="fa fa-step-backward"></i></a>
+                <a href="#" class="play-pause"><i class="fa fa-pp"></i></a>
+                <a href="#" class="stop"><i class="fa fa-stop"></i></a>
+                <a href="#" class="next"><i class="fa fa-step-forward"></i></a>
+                <input type="range" class="volume" min="0" max="1" step="0.1" value="0.5" data-css="0.5">
+            </div>
+
+        </div>
+    </div>
+</body>
+
+
+</html>
