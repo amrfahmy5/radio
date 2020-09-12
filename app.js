@@ -13,8 +13,8 @@ var programRouter = require('./routes/program');
 var episodeRouter = require('./routes/episode');
 var postRouter = require('./routes/post');
 var commentRouter = require('./routes/comment');
+var indexRouter = require('./routes/index');
 var miniRadio = require('./routes/miniRadio')
-
 var app = express();
 
 // view engine setup
@@ -23,7 +23,7 @@ app.set('view engine', 'hbs');
 app.engine('hbs', handlebars({
   layoutsDir: __dirname + '/views/layouts',
   extname: 'hbs',
-  defaultLayout: 'userIndex',
+  defaultLayout: 'UserLayout',
   partialsDir: __dirname + '/views/partials/'
   }));
 
@@ -40,12 +40,10 @@ app.use(bodyParser.json());
 
 //----------------passport-------------------
 var passport = require('passport');
-
-
 app.use(passport.initialize());
 app.use(passport.session());
-//----------------!passport-------------------
 
+app.use('/', indexRouter);
 app.use('/user', usersRouter);
 app.use('/program', programRouter);
 app.use('/episode', episodeRouter);
