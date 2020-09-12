@@ -14,6 +14,7 @@ var episodeRouter = require('./routes/episode');
 var postRouter = require('./routes/post');
 var commentRouter = require('./routes/comment');
 var indexRouter = require('./routes/index');
+var miniRadio = require('./routes/miniRadio')
 var app = express();
 
 // view engine setup
@@ -37,7 +38,10 @@ app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.json());
 
-
+//----------------passport-------------------
+var passport = require('passport');
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/', indexRouter);
 app.use('/user', usersRouter);
@@ -45,6 +49,7 @@ app.use('/program', programRouter);
 app.use('/episode', episodeRouter);
 app.use('/post', postRouter);
 app.use('/comment', commentRouter);
+app.use('/miniRadio', miniRadio);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

@@ -6,9 +6,9 @@ function makePath(id,imgPath,extention){
 
 exports.save = (program,user_id,imgPath,promoPath,extName,validFile,callback)=>{
     console.log(validFile)
-    con.query("SELECT max(id) FROM program",(err,result)=>{
-        id = (result[0]['max(id)']!=null)?result[0]['max(id)'] +1 : 1
-        con.query("INSERT INTO radio.program (id,title, description, cover,promo, show_date, user_id) VALUES (? , ? ,? , ? , ? , ? , ?)"
+    con.query("SELECT max(program_id) FROM program",(err,result)=>{
+        id = (result[0]['max(program_id)']!=null)?result[0]['max(program_id)'] +1 : 1
+        con.query("INSERT INTO radio.program (program_id,title, description, cover,promo, show_date, user_id) VALUES (? , ? ,? , ? , ? , ? , ?)"
                 ,[id,program.title , program.description ,validFile.img? makePath(id,imgPath,extName):'',validFile.audio?makePath(id,promoPath,"mp3"):''  , program.show_date , user_id], callback)
     })
 }   
@@ -19,7 +19,7 @@ exports.update = (program,imgPath,promoPath ,extName,validFile, callback)=>{
     (validFile.img?("' , cover = '" + makePath(program.program_id,imgPath,extName) ):"")+
     (validFile.audio?("' , promo = '" + makePath(program.program_id,promoPath,"mp3") ):"")+
     "' , show_date = '"+program.show_date+
-    "' WHERE id = '"+ program.program_id+"'" 
+    "' WHERE program_id = '"+ program.program_id+"'" 
     console.log(query)
     con.query(query,callback);
     
@@ -28,13 +28,13 @@ exports.update = (program,imgPath,promoPath ,extName,validFile, callback)=>{
 }
 
 exports.delete = (id , callback)=>{
-    con.query("DELETE FROM radio.program WHERE id = ? " ,[id], callback)
+    con.query("DELETE FROM radio.program WHERE program_id = ? " ,[id], callback)
 }
 exports.getAllPrograms = (callback)=>{
-    con.query("SELECT * FROM radio.program" , callback)
+    con.query("SELECT * FROM radio.program join user on program.user_id = user.id" , callback)
 }
 exports.findProgramById = (id , callback)=>{
-    con.query("SELECT * FROM radio.program WHERE id = ? " ,[id], callback)
+    con.query("SELECT * FROM radio.program WHERE program_id = ? " ,[id], callback)
 }
 
 

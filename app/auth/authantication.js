@@ -1,5 +1,29 @@
+exports.isLogged = (req, res, next) => {
+    if (req.isAuthenticated())
+        res.redirect('/user/')
+    else
+        next();
+}
+
+exports.logout = (req, res, next) => {
+    req.logOut();
+    res.redirect('/users/login');
+}
+
+
+
+
+
+
+
+
+
+
+
+//-----------------------pure authantication-----------------
+/*
 const User = require("./../models/User");
-const con = require("../../config/connection");
+
 
 async function intializeSession(req,id,user_name)
 {
@@ -74,3 +98,5 @@ exports.protect = async (req, res, next) => {
         return;
     }
 }
+
+*/
