@@ -34,9 +34,8 @@ exports.getAllPrograms = (callback)=>{
     con.query("SELECT p.* , u.user_name FROM radio.program p inner join radio.user u on p.user_id = u.id" , callback)
 }
 exports.findProgramById = (id , callback)=>{
-    con.query("SELECT * FROM radio.program WHERE program_id = ? " ,[id], callback)
+    con.query(" SELECT  program.* , u1.* , u2.id as montageID,  u2.user_name as montageName, u2.email as montageEmail, u2.img as montageImg ,u3.id as appointmentID,  u3.user_name as appointmentName, u3.email as appointmentEmail , u3.img as appointmentImg  FROM program  LEFT JOIN user as u1 ON u1.id = program.user_id  LEFT JOIN user as u2 ON u2.id = program.userMontage_id LEFT JOIN user as u3 ON u3.id = program.userAppointment_id  WHERE program_id=  ? " ,[id], callback)
 }
-
 
 exports.search = (tableName,title,description,callback)=>{
     let regex =".*"
@@ -47,3 +46,16 @@ exports.search = (tableName,title,description,callback)=>{
     else if(String(tableName).match('episode'))
     con.query("SELECT * FROM radio.episode WHERE title REGEXP ? OR description REGEXP ?",[title,description],callback)
 }
+
+
+
+
+/*
+SELECT program.* , u1.* , u2.id as montageID,  u2.user_name as montageName, u2.email as montageEmail , u2.img as montageImg,
+u3.id as appointmentID,  u3.user_name as appointmentName, u3.email as appointmentEmail , u3.img as appointmentImg
+FROM `program` 
+LEFT JOIN user as u1 ON u1.id = program.user_id 
+LEFT JOIN user as u2 ON u2.id = program.userMontage_id 
+LEFT JOIN user as u3 ON u3.id = program.userAppointment_id 
+WHERE program_id=1
+*/

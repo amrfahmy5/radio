@@ -1,7 +1,11 @@
-const Episode = require("../models/Episode");
+
 var path = '/Audio/episodes/';
 var formidable = require('formidable');
 const fileManager = require("../middelware/fileManager")
+
+const comment = require('../models/Comment')
+const Episode = require("../models/Episode");
+
 
 
 
@@ -15,14 +19,14 @@ exports.createEpisode = (req, res) => {
             if (!err) {
                 var socket = require('../socket-io/notfication')
                 socket.newEpisode(fields)
-                fileManager.uploadFile(files.file, path + results.insertId,(uploaded)=>{
+                fileManager.uploadFile(files.file, path + results.insertId, (uploaded) => {
                     console.log(uploaded)
                     res.status(200).json({
                         status: "created",
-                        audio:(uploaded)?"audio saved":"audio not saved"
+                        audio: (uploaded) ? "audio saved" : "audio not saved"
                     })
                 })
-                
+
             }
             else {
                 res.status(500).json({
@@ -40,10 +44,10 @@ exports.updateEpisode = (req, res) => {
         user_id = 1 //req.session.user_id ;
         Episode.update(episode, path, (err, result) => {
             if (!err) {
-                fileManager.uploadFile(files.file, path + episode.program_id,(uploaded)=>{
+                fileManager.uploadFile(files.file, path + episode.program_id, (uploaded) => {
                     res.status(201).json({
                         status: "updated",
-                        image:(uploaded)?"audio updated":"audio not updated"
+                        image: (uploaded) ? "audio updated" : "audio not updated"
                     })
                 })
             }
@@ -58,20 +62,36 @@ exports.updateEpisode = (req, res) => {
 }
 exports.findByProgramId = (req, res) => {
     program_id = req.param("program_id");
-    Episode.findByProgramId(program_id, (err, results) => {
-        status = results.length > 1 ? true : false;
-        res.render("user/episodes" , {
-            status,
-            data: results
-        })
+
+    Episode.findByProgramId(program_id, (err, eposides) => {
+        if (!err) {
+            for (let i = 0; i < eposides.length; i++) {
+                Episode.episodeWatch(eposides[i].id, (err, result) => {
+                    eposides[i].watches = (result[0].watch&&!err) ? result[0].watch : 0
+
+                })
+                comment.findByEpisodeId(eposides[i].id, (err, result) => {
+                    eposides[i].comments =(!err) ?result:[]
+                    eposides[i].commentCount =(!err) ? result.length:0
+                    if (i == eposides.length - 1) {
+                        res.status(201).json({
+                            eposides
+                        })
+                    }
+                })
+            }
+        }
+
     })
 }
+
+
 exports.removeEpisode = (req, res) => {
     let episode_id = req.param("episode_id");
     Episode.delete(episode_id, (err, result) => {
         if (!err) {
             res.status(201).json({
-                status:(result.affectedRows==1)? true:false
+                status: (result.affectedRows == 1) ? true : false
             })
         }
         else {
@@ -107,7 +127,7 @@ exports.watch = (req, res) => {
 exports.makeRate = (req, res) => {
     let user_id = 1 //req.session.user_id ;
     let episode_id = req.param('episode_id');
-    let rate = req.param('rate')%6;
+    let rate = req.param('rate') % 6;
     Episode.insertRate(user_id, episode_id, rate, (err, result) => {
         if (!err) {
             res.status(201).json({
@@ -125,16 +145,14 @@ exports.makeRate = (req, res) => {
 exports.episodeRate = (req, res) => {
     let episode_id = req.param('episode_id');
     Episode.episodeRate(episode_id, (err, result) => {
-        rate =result[0]
+        rate = result[0]
         if (!err) {
             res.status(201).json({
-                status: "rated",
-                rate :result[0].rate
+                rate: result[0].rate
             })
         }
         else {
             res.status(401).json({
-                status: "faild to rate praogram ",
                 Error: err
             })
         }

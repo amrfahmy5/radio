@@ -1,10 +1,13 @@
 let con = require("../../config/connection");
 
 exports.findByPostId = (post_id , callback)=>{
-    con.query("SELECT * FROM radio.comment WHERE post_id = ? " ,[post_id], callback)
+    con.query("SELECT * FROM radio.comment LEFT JOIN user ON comment.user_id=user.id WHERE post_id = ? " ,[post_id], callback)
 }
 exports.findByEpisodeId = (program_id , callback)=>{
-    con.query("SELECT * FROM radio.comment WHERE episode_id = ? " ,[program_id], callback)
+    con.query("SELECT * FROM radio.comment LEFT JOIN user ON comment.user_id=user.id WHERE episode_id = ? " ,[program_id], callback)
+}
+exports.findByProgramId = (program_id , callback)=>{
+    con.query("SELECT * FROM radio.comment LEFT JOIN user ON comment.user_id=user.id WHERE program_id = ? " ,[program_id], callback)
 }
 exports.delete = (id, callback)=>{
     con.query("DELETE FROM radio.comment WHERE id = ? " ,[id], callback)
@@ -17,3 +20,4 @@ exports.update = (comment , callback)=>{
     con.query("UPDATE radio.comment SET content  = ? WHERE id = ?"
                 ,[comment.content , comment.id], callback)
 }
+

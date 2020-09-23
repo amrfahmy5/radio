@@ -50,6 +50,28 @@ exports.episodeRate = (episode_id,callback)=>{
     con.query("select SUM(rate)/COUNT(episode_id) as rate from radio.rate where episode_id=? and rate!=0",[episode_id],callback)
 }
 
+exports.episodeWatch = (episode_id,callback)=>{
+    con.query("select COUNT(episode_id) as watch from radio.rate where episode_id=?",[episode_id],callback)
+}
+
+exports.programRate = (program_id,callback)=>{
+    con.query("SELECT episode.id FROM radio.episode WHERE episode.program_id = ? " ,[program_id], (err,result)=>{
+        if(result.length!=0){
+            var eposidesId='('
+            for(let i =0 ;i<result.length;i++)
+            {
+                eposidesId+=result[i].id
+                eposidesId+=(i==result.length-1)?')':',';
+            }
+            console.log(eposidesId)
+            let query='select SUM(rate)/COUNT(episode_id) as rate from radio.rate where episode_id IN '+eposidesId+'and rate!=0'
+            con.query(query,[eposidesId],callback)
+        }
+        
+    })
+
+    
+}
 
 
 

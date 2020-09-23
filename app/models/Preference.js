@@ -17,3 +17,8 @@ exports.save = (preference, callback)=>{
 exports.findPostsOfPrefieredPrograms = (user_id , callback)=>{
     con.query("SELECT p.* , pro.title FROM radio.preference pre INNER JOIN radio.post p ON pre.program_id = p.program_id INNER JOIN radio.program pro ON pro.id = pre.id WHERE pre.user_id = ?", [user_id] , callback);
 }
+
+
+exports.countByProgramId = (program_id , callback)=>{
+    con.query("SELECT COUNT(id) as prefCount  FROM radio.preference WHERE program_id = ? " ,[program_id], callback)
+}

@@ -4,31 +4,35 @@ var formidable = require('formidable');
 const fileManager = require("../middelware/fileManager")
 
 
+const Comment = require('../models/Comment')
+const Preference = require('../models/Preference')
+const Episode = require('../models/Episode')
+
+
 var imgPath = '/images/programImage/';
 var promoPath = '/Audio/programPromo/'
 
-function NewProgramNotfication(fields){
+function NewProgramNotfication(fields) {
     var socket = require('../socket-io/notfication')
     socket.newProgram(fields)
 }
 
-function saveFiles_sendRes(res,files,id,method)
-{
+function saveFiles_sendRes(res, files, id, method) {
     fileManager.uploadFile(files.file, imgPath + id, (imageUploaded) => {
-            fileManager.uploadFile(files.file2, promoPath + id, (promoUploaded) => {
-                res.status(200).json({
-                    status: method,
-                    image: (imageUploaded&&promoUploaded) ? "image and promo "+method : 
-                        (imageUploaded&&!promoUploaded)? "image "+ method+" but promo not": 
-                        (!imageUploaded&&promoUploaded)? "promo "+ method+" but image not" :"image and promo not "+method
-                })
+        fileManager.uploadFile(files.file2, promoPath + id, (promoUploaded) => {
+            res.status(200).json({
+                status: method,
+                image: (imageUploaded && promoUploaded) ? "image and promo " + method :
+                    (imageUploaded && !promoUploaded) ? "image " + method + " but promo not" :
+                        (!imageUploaded && promoUploaded) ? "promo " + method + " but image not" : "image and promo not " + method
             })
+        })
     })
 }
-exports.index = (req , res)=>{
+exports.index = (req, res) => {
 
-    Program.getAllPrograms((err , result)=>{
-        res.render("user/index" , {
+    Program.getAllPrograms((err, result) => {
+        res.render("user/index", {
             Programs: result
         })
     })
@@ -38,16 +42,16 @@ exports.createProgram = (req, res) => {
     var form = new formidable.IncomingForm();
     form.parse(req, function (err, fields, files) {
         let USER_ID = 1 //req.session.userID
-        let imgExtName =(files.file)?fileManager.getExtetion(files.file.name):''
-        let audioExtName=fileManager.getExtetion(files.file2.name)
+        let imgExtName = (files.file) ? fileManager.getExtetion(files.file.name) : ''
+        let audioExtName = fileManager.getExtetion(files.file2.name)
         let validFile = {
-            "img":(files.file&&(imgExtName=='jpg'|| imgExtName=='png'|| imgExtName=='PNG'))?true:false,
-            "audio":(files.file2&&(audioExtName=='mp3'))?true:false
+            "img": (files.file && (imgExtName == 'jpg' || imgExtName == 'png' || imgExtName == 'PNG')) ? true : false,
+            "audio": (files.file2 && (audioExtName == 'mp3')) ? true : false
         }
-        Program.save(fields, USER_ID, imgPath,promoPath, imgExtName,validFile, (err, result) => {
+        Program.save(fields, USER_ID, imgPath, promoPath, imgExtName, validFile, (err, result) => {
             NewProgramNotfication(fields);
             if (!err) {
-                saveFiles_sendRes(res,files,result.insertId,'saved')                
+                saveFiles_sendRes(res, files, result.insertId, 'saved')
             }
             else {
                 res.status(404).json({
@@ -62,15 +66,15 @@ exports.createProgram = (req, res) => {
 exports.updateProgram = (req, res) => {
     var form = new formidable.IncomingForm();
     form.parse(req, function (err, fields, files) {
-        let imgExtName =(files.file)?fileManager.getExtetion(files.file.name):''
-        let audioExtName=fileManager.getExtetion(files.file2.name)
+        let imgExtName = (files.file) ? fileManager.getExtetion(files.file.name) : ''
+        let audioExtName = fileManager.getExtetion(files.file2.name)
         let validFile = {
-            "img":(files.file&&(imgExtName=='jpg'|| imgExtName=='png'|| imgExtName=='PNG'))?true:false,
-            "audio":(files.file2&&(audioExtName=='mp3'))?true:false
+            "img": (files.file && (imgExtName == 'jpg' || imgExtName == 'png' || imgExtName == 'PNG')) ? true : false,
+            "audio": (files.file2 && (audioExtName == 'mp3')) ? true : false
         }
-        Program.update(fields, imgPath,promoPath, imgExtName,validFile, (err, result) => {
+        Program.update(fields, imgPath, promoPath, imgExtName, validFile, (err, result) => {
             if (!err) {
-                saveFiles_sendRes(res,files,fields.program_id,'update')  
+                saveFiles_sendRes(res, files, fields.program_id, 'update')
             }
             else {
                 res.status(401).json({
@@ -103,7 +107,7 @@ exports.getPrograms = (req, res) => {
 
     Program.getAllPrograms((err, result) => {
         if (!err) {
-            res.render("user/index" , {
+            res.render("user/index", {
                 Programs: result
             })
         }
@@ -120,13 +124,29 @@ exports.getProgram = (req, res) => {
     let program_id = req.param("program_id");
     Program.findProgramById(program_id, (err, result) => {
         if (!err) {
-            res.status(201).json({
-                Programs: result[0]
+            Comment.findByProgramId(program_id, (comErr, commResult) => {
+                if (!comErr) {
+                    Preference.countByProgramId(program_id, (prefErr, prefResult) => {
+                        if (!prefErr) {
+                            Episode.programRate(program_id, (rateErr, rateResult) => {
+                                if (!rateErr) {
+                                    res.status(201).json({
+                                        Program: result[0],
+                                        comments: commResult,
+                                        commentCount: commResult.length,
+                                        prefCount: prefResult[0],
+                                        rate: rateResult
+                                    })
+                                }
+                            })
+                        }
+                    })
+                }
             })
         }
         else {
             res.status(401).json({
-                status: "faild to get all praogram ",
+                status: "faild to get praogram ",
                 Error: err
             })
         }
