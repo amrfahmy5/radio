@@ -9,18 +9,8 @@
         <link rel="stylesheet" type="text/css" href="styles/bootstrap-4.1.2/bootstrap.min.css">
         <link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
         <link href="plugins/colorbox/colorbox.css" rel="stylesheet" type="text/css">
-        <link rel="stylesheet" type="text/css" href="styles/blog.css">
-        <link rel="stylesheet" type="text/css" href="styles/blog_responsive.css">
-        <link rel="stylesheet" type="text/css" href="styles/main_styles.css">
-        <link rel="stylesheet" type="text/css" href="styles/responsive.css">
-        <link rel="stylesheet" type="text/css" href="styles/about.css">
-        <link rel="stylesheet" type="text/css" href="styles/about_responsive.css">
-        <link rel="stylesheet" type="text/css" href="styles/contact.css">
-        <link rel="stylesheet" type="text/css" href="styles/contact_responsive.css">
-        <link rel="stylesheet" type="text/css" href="styles/episode.css">
-        <link rel="stylesheet" type="text/css" href="styles/episode_responsive.css">
-        <link rel="stylesheet" type="text/css" href="styles/episodes.css">
-        <link rel="stylesheet" type="text/css" href="styles/episodes_responsive.css">
+        <link href="stylesheets/login.css" rel="stylesheet" type="text/css">
+
     </head>
     <body>
         <div class="super_container">
@@ -55,22 +45,27 @@
                 <!-- Submit & Social -->
                 <div class="header_right d-flex flex-row align-items-start justify-content-start">
 
-                    <!-- Submit -->
-                    <div class="submit"><a href="#">Submit a Podcast</a></div>
 
-                    <!-- Social -->
-                    <div class="social">
-                        <ul class="d-flex flex-row align-items-start justify-content-start">
-                            <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                            <li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
-                            <li><a href="#"><i class="fa fa-soundcloud" aria-hidden="true"></i></a></li>
-                            <li><a href="#"><i class="fa fa-vimeo" aria-hidden="true"></i></a></li>
-                            <li><a href="#"><i class="fa fa-youtube-play" aria-hidden="true"></i></a></li>
-                        </ul>
-                    </div>
+                    {{# if loggedIn}}
+                        <div class="submit"><a href="#">{{username}}</a></div>
+                    {{ else }}
+                        <div class="submit"><a onclick="document.getElementById('id01').style.display='block'">login</a></div>
+                        <div class="submit"><a onclick="document.getElementById('id02').style.display='block'">Signup</a></div>
+                    {{/ if}}
+                        
+                        <!-- Social -->
+                        <div class="social">
+                            <ul class="d-flex flex-row align-items-start justify-content-start">
+                                <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                                <li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                                <li><a href="#"><i class="fa fa-soundcloud" aria-hidden="true"></i></a></li>
+                                <li><a href="#"><i class="fa fa-vimeo" aria-hidden="true"></i></a></li>
+                                <li><a href="#"><i class="fa fa-youtube-play" aria-hidden="true"></i></a></li>
+                            </ul>
+                        </div>
 
-                    <!-- Hamburger -->
-                    <div class="hamburger"><i class="fa fa-bars" aria-hidden="true"></i></div>
+                        <!-- Hamburger -->
+                        <div class="hamburger"><i class="fa fa-bars" aria-hidden="true"></i></div>
 
                 </div>
             </header>
@@ -118,42 +113,12 @@
                         <div class="col-lg-4">
                             <div class="footer_title">Tags</div>
                             <div class="footer_list">
-                                <div>
-                                    <div><a href="#">music</a></div>
-                                </div>
-                                <div>
-                                    <div><a href="#">art</a></div>
-                                </div>
-                                <div>
-                                    <div><a href="#">technology</a></div>
-                                </div>
-                                <div>
-                                    <div><a href="#">travel & food</a></div>
-                                </div>
-                                <div>
-                                    <div><a href="#">viral</a></div>
-                                </div>
-                                <div>
-                                    <div><a href="#">social media</a></div>
-                                </div>
-                                <div>
-                                    <div><a href="#">interview</a></div>
-                                </div>
-                                <div>
-                                    <div><a href="#">developement</a></div>
-                                </div>
-                                <div>
-                                    <div><a href="#">success</a></div>
-                                </div>
-                                <div>
-                                    <div><a href="#">live</a></div>
-                                </div>
-                                <div>
-                                    <div><a href="#">did you know?</a></div>
-                                </div>
-                                <div>
-                                    <div><a href="#">health</a></div>
-                                </div>
+                                {{# each Programs}}
+                                    <div>
+                                        <div><a href="/user/profile/{{this.user_id}}">{{this.user_name}}</a></div>
+                                    </div>
+                                {{/ each}}
+                                
                             </div>
                         </div>
 
@@ -321,38 +286,96 @@
                     Copyright &copy;
                     <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is
                     made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com"
-                        target="_blank">Colorlib</a>
+                        target="_blank">Gom3a Abied</a>
                     <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 
                 </div>
             </footer>
         </div>
 
-        <script src="js/jquery-3.3.1.min.js"></script>
-        <script src="styles/bootstrap-4.1.2/popper.js"></script>
-        <script src="styles/bootstrap-4.1.2/bootstrap.min.js"></script>
-        <script src="plugins/greensock/TweenMax.min.js"></script>
-        <script src="plugins/greensock/TimelineMax.min.js"></script>
-        <script src="plugins/scrollmagic/ScrollMagic.min.js"></script>
-        <script src="plugins/greensock/animation.gsap.min.js"></script>
-        <script src="plugins/greensock/ScrollToPlugin.min.js"></script>
-        <script src="plugins/easing/easing.js"></script>
-        <script src="plugins/colorbox/jquery.colorbox-min.js"></script>
-        <script src="plugins/progressbar/progressbar.min.js"></script>
-        <script src="plugins/parallax-js-master/parallax.min.js"></script>
-        <script
-            src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyCIwF204lFZg1y4kPSIhKaHEXMLYxxuMhA"></script>
-        <script src="plugins/jPlayer/jquery.jplayer.min.js"></script>
-        <script src="plugins/jPlayer/jplayer.playlist.min.js"></script>
-        <script src="plugins/Isotope/isotope.pkgd.min.js"></script>
-        <script src="js/episode.js"></script>
-        <script src="js/contact.js"></script>
-        <script src="js/custom.js"></script>
-        <script src="js/blog.js"></script>
-        <script src="js/about.js"></script>
-        <script src="js/episodes.js"></script>
-
 
         </div>
+        {{!-- --------------------Login ----------------- --}}
+        <div id="id01" class="modal">
+            <form class="modal-content animate" action="/user/login" method="post">
+                <div class="imgcontainer">
+                    <span onclick="document.getElementById('id01').style.display='none'" class="close"
+                        title="Close Modal">&times;</span>
+                    <img src="images/img_avatar2.png" alt="Avatar" class="avatar">
+                </div>
+
+                <div class="container">
+                    <label for="id"><b>User Name</b></label>
+                    <input type="text" placeholder="Enter User Name" name="id" required>
+
+                    <label for="psw"><b>Password</b></label>
+                    <input type="password" placeholder="Enter Password" name="psw" required>
+
+                    <button class = "sbmtbtn" type="submit">Login</button>
+                    <label>
+                        <input type="checkbox" checked="checked" name="remember"> Remember me
+                    </label>
+                </div>
+
+                <div class="container" style="background-color:#f1f1f1">
+                    <button type="button" onclick="document.getElementById('id01').style.display='none'"
+                        class="sbmtbtn cancelbtn">Cancel</button>
+                    <span class="psw">Forgot <a href="#">password?</a></span>
+                </div>
+            </form>
+        </div>
+{{!-- -------------------Sign up------------------------ --}}
+<div id="id02" class="modal">
+            <form class="modal-content animate" action="/user/login" method="post">
+                <div class="imgcontainer">
+                    <span onclick="document.getElementById('id02').style.display='none'" class="close"
+                        title="Close Modal">&times;</span>
+                    <img src="images/img_avatar2.png" alt="Avatar" class="avatar">
+                    <hr>
+                    <label for="img">upload personal image</label>
+                    <input type="file" name="img" id="img" class="avatar ml-5"> 
+                </div>
+              
+                <div class="container">
+                    <label for="username"><b>User Name</b></label>
+                    <input type="text" id= "username" placeholder="Enter User Name" name="username" required>
+
+                    <label for="email"><b>E-Mail</b></label>
+                    <input type="email" id = "email" placeholder="Enter E-Mail" name="emial" required>
+
+                    <label for="age"><b>age</b></label>
+                    <input type="number" id="age" placeholder="Enter age" name="age" required>
+
+                    <label for="password"><b>Password</b></label>
+                    <input type="password" id="password" placeholder="Enter Password" name="passwrod" required>
+
+                    <button class = "sbmtbtn" type="submit">Signup</button>
+                    <label>
+                        <input type="checkbox" checked="checked" name="remember"> Remember me
+                    </label>
+                </div>
+
+                <div class="container" style="background-color:#f1f1f1">
+                    <button type="button" onclick="document.getElementById('id02').style.display='none'"
+                        class="sbmtbtn cancelbtn">Cancel</button>
+                    <span class="psw">Forgot <a href="#">password?</a></span>
+                </div>
+            </form>
+        </div>
+
+        <script>
+            // Get the modal
+            var modal = document.getElementById('id01');
+            var modal2 = document.getElementById('id02');
+        
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function (event) {
+                if (event.target == modal || event.target == modal2  ) {
+                    modal.style.display = "none";
+                    modal2.style.display = "none";
+                }
+            }
+        </script>
+
     </body>
 </html>

@@ -485,10 +485,12 @@ section
 }
 .submit:hover
 {
+	cursor:pointer;
 	border-color: #ff3000;
 }
 .submit:hover a
 {
+	cursor:pointer;
 	color: #ff3000;
 }
 .hamburger
@@ -869,10 +871,7 @@ section
 	color: #2e3038;
 	margin-left: 7px;
 	margin-bottom: 2px;
-}
-.show_comments:hover .show_comments_count
-{
-	color: #ff3500;
+	cursor: pointer;
 }
 .show_play_icon
 {

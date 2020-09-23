@@ -31,7 +31,7 @@ exports.delete = (id , callback)=>{
     con.query("DELETE FROM radio.program WHERE program_id = ? " ,[id], callback)
 }
 exports.getAllPrograms = (callback)=>{
-    con.query("SELECT * FROM radio.program join user on program.user_id = user.id" , callback)
+    con.query("SELECT p.* , u.user_name FROM radio.program p inner join radio.user u on p.user_id = u.id" , callback)
 }
 exports.findProgramById = (id , callback)=>{
     con.query("SELECT * FROM radio.program WHERE program_id = ? " ,[id], callback)

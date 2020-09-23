@@ -25,7 +25,14 @@ function saveFiles_sendRes(res,files,id,method)
             })
     })
 }
+exports.index = (req , res)=>{
 
+    Program.getAllPrograms((err , result)=>{
+        res.render("user/index" , {
+            Programs: result
+        })
+    })
+}
 exports.createProgram = (req, res) => {
 
     var form = new formidable.IncomingForm();
@@ -96,7 +103,7 @@ exports.getPrograms = (req, res) => {
 
     Program.getAllPrograms((err, result) => {
         if (!err) {
-            res.status(201).json({
+            res.render("user/index" , {
                 Programs: result
             })
         }
