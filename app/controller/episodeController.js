@@ -60,7 +60,7 @@ exports.findByProgramId = (req, res) => {
     program_id = req.param("program_id");
     Episode.findByProgramId(program_id, (err, results) => {
         status = results.length > 1 ? true : false;
-        res.status(200).json({
+        res.render("user/episodes" , {
             status,
             data: results
         })
