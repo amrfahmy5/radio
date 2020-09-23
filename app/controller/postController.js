@@ -7,6 +7,7 @@ function validate(Post) {
     var state = 1;
     return state;
 }
+
 exports.createPost= (req,res)=>{
         post = {
             content : req.body.content,

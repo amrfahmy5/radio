@@ -1,5 +1,5 @@
 let Preference = require("../models/Preference");
-
+const Program  = require("../models/Program")
 
 exports.prefereProgram= (req,res)=>{
     preference = {
@@ -48,4 +48,17 @@ exports.removePreference = (req, res )=>{
         status = results.affectedRows === 1 ? true : false;
         res.status(200).json({status})
     })
+}
+exports.getPostsOfPreferedPrograms = (req , res)=>{
+    var USER_ID = 1 ; // GET FROM SESSION LATER
+    Preference.findPostsOfPrefieredPrograms(USER_ID , (err, result)=>{
+        Program.getAllPrograms((err ,progs)=>{
+            res.render("user/blog" , {
+                posts : result,
+                programs : progs
+            })
+
+        })
+    })
+
 }
