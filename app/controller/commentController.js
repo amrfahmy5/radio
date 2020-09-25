@@ -9,16 +9,14 @@ exports.createComment= (req,res)=>{
             content : req.body.content,
             user_id : 1, // till session work
             episode_id : req.body.episode_id,
-            post_id : req.body.post_id
+            program_id : req.body.program_id
         }
         var state = validate(comment);
         if (state === 1){
             Comment.save(comment, (err , results)=>{
                 console.log(comment)
                 if (results){
-                    res.status(200).json({
-                        status:"created"           
-                    })
+                    res.redirect('back')
                 }
                 else  
                    {

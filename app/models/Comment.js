@@ -13,8 +13,8 @@ exports.delete = (id, callback)=>{
     con.query("DELETE FROM radio.comment WHERE id = ? " ,[id], callback)
 }
 exports.save = (comment, callback)=>{
-    con.query("INSERT INTO radio.comment (content, user_id,post_id, episode_id) VALUES (?, ? , ? , ?)"
-                ,[comment.content , comment.user_id , comment.post_id,  comment.episode_id], callback)
+    con.query("INSERT INTO radio.comment (content, user_id,program_id, episode_id) VALUES (?, ? , ? , ?)"
+                ,[comment.content , comment.user_id , comment.program_id,  comment.episode_id], callback)
 }
 exports.update = (comment , callback)=>{
     con.query("UPDATE radio.comment SET content  = ? WHERE id = ?"

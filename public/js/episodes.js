@@ -210,13 +210,13 @@ $(document).ready(function()
 					$(this).jPlayer("setMedia", {
 						title:"Better Days",
 							artist:"Bensound",
-							mp3:"files/bensound-betterdays.mp3"
+							mp3:"/files/bensound-betterdays.mp3"
 					});
 				},
 				play: function() { // To avoid multiple jPlayers playing together.
 					$(this).jPlayer("pauseOthers");
 				},
-				swfPath: "plugins/jPlayer",
+				swfPath: "/plugins/jPlayer",
 				supplied: "mp3",
 				cssSelectorAncestor: "#jp_container_1",
 				wmode: "window",
@@ -239,13 +239,13 @@ $(document).ready(function()
 					$(this).jPlayer("setMedia", {
 						title:"Better Days",
 							artist:"Bensound",
-							mp3:"files/bensound-betterdays.mp3"
+							mp3:"/files/bensound-betterdays.mp3"
 					});
 				},
 				play: function() { // To avoid multiple jPlayers playing together.
 					$(this).jPlayer("pauseOthers");
 				},
-				swfPath: "plugins/jPlayer",
+				swfPath: "/plugins/jPlayer",
 				supplied: "mp3",
 				cssSelectorAncestor: "#jp_container_2",
 				wmode: "window",
@@ -268,13 +268,13 @@ $(document).ready(function()
 					$(this).jPlayer("setMedia", {
 						title:"Better Days",
 							artist:"Bensound",
-							mp3:"files/bensound-betterdays.mp3"
+							mp3:"/files/bensound-betterdays.mp3"
 					});
 				},
 				play: function() { // To avoid multiple jPlayers playing together.
 					$(this).jPlayer("pauseOthers");
 				},
-				swfPath: "plugins/jPlayer",
+				swfPath: "/plugins/jPlayer",
 				supplied: "mp3",
 				cssSelectorAncestor: "#jp_container_3",
 				wmode: "window",
@@ -297,13 +297,13 @@ $(document).ready(function()
 					$(this).jPlayer("setMedia", {
 						title:"Better Days",
 							artist:"Bensound",
-							mp3:"files/bensound-betterdays.mp3"
+							mp3:"/files/bensound-betterdays.mp3"
 					});
 				},
 				play: function() { // To avoid multiple jPlayers playing together.
 					$(this).jPlayer("pauseOthers");
 				},
-				swfPath: "plugins/jPlayer",
+				swfPath: "/plugins/jPlayer",
 				supplied: "mp3",
 				cssSelectorAncestor: "#jp_container_4",
 				wmode: "window",
@@ -326,13 +326,13 @@ $(document).ready(function()
 					$(this).jPlayer("setMedia", {
 						title:"Better Days",
 							artist:"Bensound",
-							mp3:"files/bensound-betterdays.mp3"
+							mp3:"/files/bensound-betterdays.mp3"
 					});
 				},
 				play: function() { // To avoid multiple jPlayers playing together.
 					$(this).jPlayer("pauseOthers");
 				},
-				swfPath: "plugins/jPlayer",
+				swfPath: "/plugins/jPlayer",
 				supplied: "mp3",
 				cssSelectorAncestor: "#jp_container_5",
 				wmode: "window",

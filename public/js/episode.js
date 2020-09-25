@@ -177,10 +177,12 @@ $(document).ready(function()
 		{
 			$("#jplayer_1").jPlayer({
 				ready: function () {
+					var promo = $(".promo").text();
+					var artist = $(".artist").text();
 					$(this).jPlayer("setMedia", {
-						title:"Better Days",
-							artist:"Bensound",
-							mp3:"files/bensound-betterdays.mp3"
+						title:"Promo",
+						artist:artist,
+						mp3: promo
 					});
 				},
 				play: function() { // To avoid multiple jPlayers playing together.

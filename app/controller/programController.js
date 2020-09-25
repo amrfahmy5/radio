@@ -130,7 +130,8 @@ exports.getProgram = (req, res) => {
                         if (!prefErr) {
                             Episode.programRate(program_id, (rateErr, rateResult) => {
                                 if (!rateErr) {
-                                    res.status(201).json({
+                                    console.log(commResult)
+                                    res.render("user/program",{
                                         Program: result[0],
                                         comments: commResult,
                                         commentCount: commResult.length,

@@ -74,8 +74,8 @@ exports.findByProgramId = (req, res) => {
                     eposides[i].comments =(!err) ?result:[]
                     eposides[i].commentCount =(!err) ? result.length:0
                     if (i == eposides.length - 1) {
-                        res.status(201).json({
-                            eposides
+                        res.render("user/episodes" , {
+                            eposides ,
                         })
                     }
                 })
